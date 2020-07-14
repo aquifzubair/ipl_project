@@ -1,0 +1,19 @@
+{
+  "name": "aquif_ipl_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/aquifzubair2/aquif_ipl_project.git"
+  },
+  "author": "aquif zubair",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/aquifzubair2/aquif_ipl_project/issues"
+  },
+  "homepage": "https://gitlab.com/aquifzubair2/aquif_ipl_project#readme"
+}
