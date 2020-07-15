@@ -1,16 +1,25 @@
-const csv=require('csvtojson');
+const csv = require("csvtojson");
 
-const csvFilePath='./../data/matches.csv';
-const {matchesPerYear,matchesWonPerTeamPerYear} = require('./ipl')
+const matchCsvFilePath = "./../data/matches.csv";
+const deliveryCsvFilePath = "./../data/deliveries.csv";
 
+const {
+  matchesPerYear,
+  matchesWonPerTeamPerYear,
+  extraRunPerTeamIn2016,
+  topTenEconomicalBowlerIn2015,
+} = require("./ipl");
 
-csv()
-.fromFile(csvFilePath)
-.then((jsonObj)=>{
-    let jsonData = jsonObj;
-    // console.log(jsonData);
-    matchesPerYear(jsonData)
-    matchesWonPerTeamPerYear(jsonData)
-    
-})
+async function runFunctions() {
+  // converting data from csv to json
+  const matchJsonData = await csv().fromFile(matchCsvFilePath);
+  const deliveryJsonData = await csv().fromFile(deliveryCsvFilePath);
 
+  //calling all four functions
+  matchesPerYear(matchJsonData);
+  matchesWonPerTeamPerYear(matchJsonData);
+  extraRunPerTeamIn2016(matchJsonData, deliveryJsonData);
+  topTenEconomicalBowlerIn2015(matchJsonData, deliveryJsonData);
+}
+
+runFunctions();
