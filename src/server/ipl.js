@@ -1,16 +1,18 @@
 const fs = require("fs");
 
 const matchesPerYear = (json) => {
-  const output = {};
-  for (let item of json) {
-    if (output.hasOwnProperty(item.season)) {
-      output[item.season]++;
-    } else output[item.season] = 1;
-  }
+  const output = json.reduce((acc,currVal) => {
+    if(acc[currVal.season])
+      acc[currVal.season]++;
+    else
+      acc[currVal.season] = 1;
+    return acc;
+  },{})
+
   fs.writeFile(
     "./../output/matchesPerYear.json",
     JSON.stringify(output),
-    function (err) {
+    (err) => {
       if (err) console.error("Not able to write file", err);
       console.log("Matches per year file saved!");
     }
