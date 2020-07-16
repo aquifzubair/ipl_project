@@ -1,13 +1,11 @@
 const fs = require("fs");
 
 const matchesPerYear = (json) => {
-  const output = json.reduce((acc,currVal) => {
-    if(acc[currVal.season])
-      acc[currVal.season]++;
-    else
-      acc[currVal.season] = 1;
+  const output = json.reduce((acc, currVal) => {
+    if (acc[currVal.season]) acc[currVal.season]++;
+    else acc[currVal.season] = 1;
     return acc;
-  },{})
+  }, {});
 
   fs.writeFile(
     "./../output/matchesPerYear.json",
@@ -20,28 +18,14 @@ const matchesPerYear = (json) => {
 };
 
 const matchesWonPerTeamPerYear = (json) => {
-  const output = json.reduce((acc,currVal) => {
-    if(acc[currVal.season]){
-      if(acc[currVal.season][currVal.winner])
-        acc[currVal.season][currVal.winner]++
-      else
-      acc[currVal.season][currVal.winner] = 1
-    }
-    else
-    acc[currVal.season] = {};
+  const output = json.reduce((acc, currVal) => {
+    if (acc[currVal.season]) {
+      if (acc[currVal.season][currVal.winner])
+        acc[currVal.season][currVal.winner]++;
+      else acc[currVal.season][currVal.winner] = 1;
+    } else acc[currVal.season] = {};
     return acc;
-  },{})
-  // for (let item of json) {
-  //   if (output.hasOwnProperty(item.season)) {
-  //     if (output[item.season].hasOwnProperty(item.winner)) {
-  //       output[item.season][item.winner]++;
-  //     } else {
-  //       output[item.season][item.winner] = 1;
-  //     }
-  //   } else {
-  //     output[item.season] = {};
-  //   }
-  // }
+  }, {});
 
   fs.writeFile(
     "./../output/wonMatchesPerYear.json",
@@ -83,6 +67,7 @@ const extraRunPerTeamIn2016 = (match, delivery) => {
   );
 };
 
+
 const topTenEconomicalBowlerIn2015 = (match, delivery) => {
   const dataOf2015 = [];
   const output = [];
@@ -96,11 +81,11 @@ const topTenEconomicalBowlerIn2015 = (match, delivery) => {
       if (item.id == items.match_id) {
         if (output[item.bowler]) {
           output[item.bowler].bowl += 1;
-          output[item.bowler].runs += parseInt(item.total_runs);
+          output[item.bowler].runs += +item.total_runs;
         } else {
           output[item.bowler] = {};
           output[item.bowler].bowl = 1;
-          output[item.bowler].runs = parseInt(item.total_runs);
+          output[item.bowler].runs = +item.total_runs;
         }
       }
     }
@@ -118,19 +103,23 @@ const topTenEconomicalBowlerIn2015 = (match, delivery) => {
       arrayOfEconomy.push(output[bowler].economy);
     }
   }
+
   arrayOfEconomy.sort((a, b) => a - b);
+
   for (let bowlers in output) {
     if (
       output[bowlers].economy <= +arrayOfEconomy[9] &&
       +output[bowlers].economy !== 0
     ) {
-      let finalobj = {};
-      finalobj.bowler = Object.values(bowlers).join("");
-      finalobj.economy = output[bowlers].economy;
-      resultArr.push(finalobj);
+      let finalObj = {};
+      finalObj.bowler = Object.values(bowlers).join("");
+      finalObj.economy = output[bowlers].economy;
+      resultArr.push(finalObj);
     }
   }
+
   resultArr.sort((a, b) => a.economy - b.economy);
+  
   fs.writeFile(
     "./../output/topTenBestBowlerByEconomy.json",
     JSON.stringify(resultArr),
