@@ -20,18 +20,28 @@ const matchesPerYear = (json) => {
 };
 
 const matchesWonPerTeamPerYear = (json) => {
-  const output = {};
-  for (let item of json) {
-    if (output.hasOwnProperty(item.season)) {
-      if (output[item.season].hasOwnProperty(item.winner)) {
-        output[item.season][item.winner]++;
-      } else {
-        output[item.season][item.winner] = 1;
-      }
-    } else {
-      output[item.season] = {};
+  const output = json.reduce((acc,currVal) => {
+    if(acc[currVal.season]){
+      if(acc[currVal.season][currVal.winner])
+        acc[currVal.season][currVal.winner]++
+      else
+      acc[currVal.season][currVal.winner] = 1
     }
-  }
+    else
+    acc[currVal.season] = {};
+    return acc;
+  },{})
+  // for (let item of json) {
+  //   if (output.hasOwnProperty(item.season)) {
+  //     if (output[item.season].hasOwnProperty(item.winner)) {
+  //       output[item.season][item.winner]++;
+  //     } else {
+  //       output[item.season][item.winner] = 1;
+  //     }
+  //   } else {
+  //     output[item.season] = {};
+  //   }
+  // }
 
   fs.writeFile(
     "./../output/wonMatchesPerYear.json",
